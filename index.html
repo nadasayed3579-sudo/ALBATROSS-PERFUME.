@@ -18,6 +18,7 @@
       --beige-border: #e3d8cb;    /* حدود بيج */
       --text-muted: #7a6a5d;      /* بني رمادي خفيف */
       --danger: #c0392b;          /* زر الحذف */
+      --edit-btn: #2980b9;        /* زر التعديل */
       --shadow-soft: 0 10px 30px rgba(61, 43, 31, 0.08);
       --transition: all 0.3s ease;
     }
@@ -481,18 +482,27 @@
       border-radius: 8px;
       margin-bottom: 0.5rem;
       background-color: var(--bg-color);
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
-    .btn-delete {
-      background-color: var(--danger);
-      color: #ffffff;
+    .admin-prod-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-action {
       border: none;
       padding: 0.4rem 0.8rem;
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.85rem;
       font-weight: bold;
+      color: #ffffff;
     }
+
+    .btn-edit { background-color: var(--edit-btn); }
+    .btn-delete { background-color: var(--danger); }
 
     /* --------------------------------------------------
        6. FOOTER & CONTACT
@@ -643,16 +653,18 @@
     </div>
   </div>
 
-  <!-- ADMIN PANEL MODAL (ADD & DELETE) -->
+  <!-- ADMIN PANEL MODAL (ADD, EDIT & DELETE) -->
   <div class="modal-overlay" id="adminModal">
     <div class="modal-card">
       <button class="close-modal" onclick="closeModal('adminModal')">&times;</button>
       <h2 style="text-align: center; color: var(--primary-brown);">لوحة التحكم (Admin Panel)</h2>
       <div class="gold-divider"></div>
 
-      <!-- Add Product Form -->
-      <form id="addProductForm" style="margin-bottom: 2rem;">
-        <h3 style="margin-bottom: 0.8rem; color: var(--caramel);">إضافة منتج جديد:</h3>
+      <!-- Add / Edit Product Form -->
+      <form id="productForm" style="margin-bottom: 2rem;">
+        <input type="hidden" id="pId">
+        <h3 id="formTitle" style="margin-bottom: 0.8rem; color: var(--caramel);">إضافة منتج جديد:</h3>
+        
         <div class="form-group">
           <label>اسم المنتج</label>
           <input type="text" id="pName" class="form-control" placeholder="مثال: عطر النسر" required>
@@ -680,20 +692,22 @@
           <label>مسار الصورة (مثال: png/nasr.png)</label>
           <input type="text" id="pImgPath" class="form-control" placeholder="png/nasr.png" required>
         </div>
-        <button type="submit" class="btn-submit">إضافة المنتج</button>
+        
+        <button type="submit" id="btnFormSubmit" class="btn-submit">حفظ المنتج</button>
+        <button type="button" id="btnCancelEdit" class="btn-submit" style="background: #7f8c8d; display: none; margin-top: 0.4rem;" onclick="resetProductForm()">إلغاء التعديل</button>
       </form>
 
-      <!-- Manage / Delete Products List -->
-      <h3 style="margin-bottom: 0.8rem; color: var(--caramel);">إدارة / حذف المنتجات الحالية:</h3>
+      <!-- Manage Products List -->
+      <h3 style="margin-bottom: 0.8rem; color: var(--caramel);">إدارة / تعديل / حذف المنتجات الحالية:</h3>
       <div id="adminProductsList">
-        <!-- List of products with Delete buttons -->
+        <!-- List of products with Edit & Delete buttons -->
       </div>
     </div>
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // 1. Initial Default Products with relative folder paths
+    // 1. Initial Default Products
     const defaultProducts = [
       {
         id: 1,
@@ -753,20 +767,20 @@
 
     let cart = [];
     let currentCategory = 'all';
-    const SHIPPING_FEE = 80; // سعر شحن ثابت لجميع المحافظات
+    const SHIPPING_FEE = 80;
 
     // Get & Save Products
     function getProducts() {
-      const stored = localStorage.getItem('albatross_products_v6');
+      const stored = localStorage.getItem('albatross_products_v7');
       if (!stored) {
-        localStorage.setItem('albatross_products_v6', JSON.stringify(defaultProducts));
+        localStorage.setItem('albatross_products_v7', JSON.stringify(defaultProducts));
         return defaultProducts;
       }
       return JSON.parse(stored);
     }
 
     function saveProducts(products) {
-      localStorage.setItem('albatross_products_v6', JSON.stringify(products));
+      localStorage.setItem('albatross_products_v7', JSON.stringify(products));
       renderProducts();
       renderAdminProductsList();
     }
@@ -926,27 +940,74 @@
       document.getElementById('checkoutForm').reset();
     }
 
-    // ADMIN MANAGEMENT
-    document.getElementById('addProductForm').addEventListener('submit', (e) => {
+    // ADMIN MANAGEMENT (ADD & EDIT)
+    document.getElementById('productForm').addEventListener('submit', (e) => {
       e.preventDefault();
       
-      const newProduct = {
-        id: Date.now(),
-        name: document.getElementById('pName').value,
-        category: document.getElementById('pCategory').value,
-        price: parseFloat(document.getElementById('pPrice').value),
-        description: document.getElementById('pDesc').value,
-        ingredients: document.getElementById('pIngredients').value,
-        image: document.getElementById('pImgPath').value
-      };
-
+      const pId = document.getElementById('pId').value;
       const products = getProducts();
-      products.push(newProduct);
-      saveProducts(products);
 
-      alert('تمت إضافة المنتج بنجاح!');
-      document.getElementById('addProductForm').reset();
+      if (pId) {
+        // Edit Existing Product
+        const index = products.findIndex(p => p.id == pId);
+        if (index !== -1) {
+          products[index] = {
+            id: Number(pId),
+            name: document.getElementById('pName').value,
+            category: document.getElementById('pCategory').value,
+            price: parseFloat(document.getElementById('pPrice').value),
+            description: document.getElementById('pDesc').value,
+            ingredients: document.getElementById('pIngredients').value,
+            image: document.getElementById('pImgPath').value
+          };
+          alert('تم تحديث المنتج بنجاح!');
+        }
+      } else {
+        // Add New Product
+        const newProduct = {
+          id: Date.now(),
+          name: document.getElementById('pName').value,
+          category: document.getElementById('pCategory').value,
+          price: parseFloat(document.getElementById('pPrice').value),
+          description: document.getElementById('pDesc').value,
+          ingredients: document.getElementById('pIngredients').value,
+          image: document.getElementById('pImgPath').value
+        };
+        products.push(newProduct);
+        alert('تمت إضافة المنتج بنجاح!');
+      }
+
+      saveProducts(products);
+      resetProductForm();
     });
+
+    function editProduct(productId) {
+      const products = getProducts();
+      const p = products.find(prod => prod.id === productId);
+      if (!p) return;
+
+      document.getElementById('pId').value = p.id;
+      document.getElementById('pName').value = p.name;
+      document.getElementById('pCategory').value = p.category;
+      document.getElementById('pPrice').value = p.price;
+      document.getElementById('pDesc').value = p.description;
+      document.getElementById('pIngredients').value = p.ingredients;
+      document.getElementById('pImgPath').value = p.image;
+
+      document.getElementById('formTitle').textContent = 'تعديل بيانات المنتج: ' + p.name;
+      document.getElementById('btnFormSubmit').textContent = 'تحديث البيانات';
+      document.getElementById('btnCancelEdit').style.display = 'block';
+
+      document.getElementById('adminModal').querySelector('.modal-card').scrollTop = 0;
+    }
+
+    function resetProductForm() {
+      document.getElementById('pId').value = '';
+      document.getElementById('productForm').reset();
+      document.getElementById('formTitle').textContent = 'إضافة منتج جديد:';
+      document.getElementById('btnFormSubmit').textContent = 'حفظ المنتج';
+      document.getElementById('btnCancelEdit').style.display = 'none';
+    }
 
     function renderAdminProductsList() {
       const products = getProducts();
@@ -960,7 +1021,10 @@
           <div>
             <strong>${p.name}</strong> (${p.category}) - <span style="color:var(--caramel);">${p.price} ج.م</span>
           </div>
-          <button class="btn-delete" onclick="deleteProduct(${p.id})">حذف 🗑️</button>
+          <div class="admin-prod-actions">
+            <button class="btn-action btn-edit" onclick="editProduct(${p.id})">تعديل ✏️</button>
+            <button class="btn-action btn-delete" onclick="deleteProduct(${p.id})">حذف 🗑️</button>
+          </div>
         `;
         listContainer.appendChild(item);
       });
@@ -986,4 +1050,3 @@
   </script>
 </body>
 </html>
-       
