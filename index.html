@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALBATROSS PERFUME - Official Store</title>
+  <style>
+    /* --------------------------------------------------
+       1. COLOR PALETTE (Beige, Caramel, Brown, Gold, White)
+       -------------------------------------------------- */
+    :root {
+      --bg-color: #f8f5f0;        /* خلفية بيج فاخرة وموحدة */
+      --card-bg: #ffffff;         /* خلفية البيضاء للبطاقات */
+      --primary-brown: #3d2b1f;   /* بني داكن أنيق */
+      --caramel: #c68b59;         /* لون الكاراميل */
+      --gold: #d4af37;            /* لمسات ذهبية */
+      --beige-light: #f1eae1;     /* بيج فاتح */
+      --beige-border: #e3d8cb;    /* حدود بيج */
+      --text-muted: #7a6a5d;      /* بني رمادي خفيف */
+      --danger: #c0392b;          /* زر الحذف */
+      --shadow-soft: 0 10px 30px rgba(61, 43, 31, 0.08);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--primary-brown);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --------------------------------------------------
+       2. HEADER, NAVBAR & SEARCH
+       -------------------------------------------------- */
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--beige-border);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+    }
+
+    .navbar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--primary-brown);
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .logo span { color: var(--gold); }
+
+    .search-box {
+      flex: 1;
+      max-width: 320px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--beige-border);
+      border-radius: 20px;
+      background-color: var(--bg-color);
+      color: var(--primary-brown);
+      font-size: 0.9rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--caramel);
+      background-color: #ffffff;
+    }
+
+    .nav-categories {
+      display: flex;
+      list-style: none;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: none;
+      border: 2px solid transparent;
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary-brown);
+      cursor: pointer;
+      border-radius: 30px;
+      transition: var(--transition);
+      text-transform: uppercase;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background-color: var(--caramel);
+      color: #ffffff;
+      border-color: var(--caramel);
+    }
+
+    .cart-btn {
+      background-color: var(--beige-light);
+      border: 1px solid var(--gold);
+      padding: 0.5rem 1.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--primary-brown);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .cart-btn:hover {
+      background-color: var(--gold);
+      color: #ffffff;
+    }
+
+    .cart-badge {
+      background-color: var(--caramel);
+      color: #ffffff;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    /* --------------------------------------------------
+       3. HERO BANNER
+       -------------------------------------------------- */
+    .hero {
+      text-align: center;
+      padding: 4rem 1.5rem 2.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--primary-brown);
+      letter-spacing: 2px;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    .gold-divider {
+      height: 3px;
+      width: 70px;
+      background: linear-gradient(90deg, var(--caramel), var(--gold));
+      margin: 1.2rem auto;
+      border-radius: 2px;
+    }
+
+    .btn-shop-now {
+      margin-top: 1.2rem;
+      display: inline-block;
+      background: linear-gradient(135deg, var(--caramel), var(--primary-brown));
+      color: #ffffff;
+      padding: 0.8rem 2.2rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 20px rgba(198, 139, 89, 0.3);
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-shop-now:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(198, 139, 89, 0.4);
+    }
+
+    /* --------------------------------------------------
+       4. PRODUCTS GRID & CARDS
+       -------------------------------------------------- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      flex: 1;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: var(--primary-brown);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--beige-border);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--caramel);
+    }
+
+    .img-wrapper {
+      width: 100%;
+      height: 260px;
+      background-color: var(--beige-light);
+      position: relative;
+    }
+
+    .product-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .category-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: var(--primary-brown);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      border: 1px solid var(--gold);
+    }
+
+    .product-info {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .product-title {
+      font-size: 1.3rem;
+      color: var(--primary-brown);
+      font-weight: 700;
+    }
+
+    .product-price {
+      font-size: 1.25rem;
+      color: var(--caramel);
+      font-weight: 800;
+      margin: 0.3rem 0;
+    }
+
+    .product-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      flex-grow: 1;
+    }
+
+    .ingredients-box {
+      background-color: var(--bg-color);
+      padding: 0.6rem 0.8rem;
+      border-radius: 8px;
+      border-right: 3px solid var(--gold);
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-add-cart {
+      background-color: var(--caramel);
+      color: #ffffff;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .btn-add-cart:hover {
+      background-color: var(--primary-brown);
+    }
+
+    /* --------------------------------------------------
+       5. MODALS & CART SYSTEM
+       -------------------------------------------------- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(61, 43, 31, 0.6);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      border: 1px solid var(--gold);
+      position: relative;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--beige-border);
+    }
+
+    .cart-item-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      background-color: var(--beige-light);
+    }
+
+    .cart-item-details { flex: 1; }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.3rem;
+    }
+
+    .qty-btn {
+      background-color: var(--beige-light);
+      border: 1px solid var(--beige-border);
+      width: 26px;
+      height: 26px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .cart-summary {
+      margin-top: 1.5rem;
+      background-color: var(--bg-color);
+      padding: 1.2rem;
+      border-radius: 10px;
+      border: 1px solid var(--beige-border);
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .summary-line.total {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary-brown);
+      border-top: 1px solid var(--beige-border);
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .form-group { margin-bottom: 1rem; }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      color: var(--primary-brown);
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid var(--beige-border);
+      border-radius: 8px;
+      background-color: var(--bg-color);
+      color: var(--primary-brown);
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--caramel);
+      background-color: #ffffff;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--caramel), var(--primary-brown));
+      color: #ffffff;
+      border: none;
+      padding: 0.9rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 0.8rem;
+    }
+
+    .admin-prod-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem;
+      border: 1px solid var(--beige-border);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      background-color: var(--bg-color);
+    }
+
+    .btn-delete {
+      background-color: var(--danger);
+      color: #ffffff;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    /* --------------------------------------------------
+       6. FOOTER & CONTACT
+       -------------------------------------------------- */
+    footer {
+      background-color: #efe8df;
+      border-top: 1px solid var(--beige-border);
+      text-align: center;
+      padding: 2.5rem 1rem;
+      margin-top: 3rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      color: var(--primary-brown);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      background-color: var(--card-bg);
+      border-radius: 20px;
+      border: 1px solid var(--beige-border);
+      transition: var(--transition);
+    }
+
+    .social-link:hover {
+      border-color: var(--caramel);
+      color: var(--caramel);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <div class="navbar">
+      <div class="logo" onclick="showHome()">ALBATROSS PERFUME<span>.</span></div>
+      
+      <!-- SEARCH BOX WITH HIDDEN ADMIN ACCESS -->
+      <div class="search-box">
+        <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن عطرك المفصل..." oninput="handleSearch()">
+      </div>
+
+      <nav>
+        <ul class="nav-categories">
+          <li><button class="nav-btn" onclick="showHome()">الرئيسية</button></li>
+          <li><button class="nav-btn active" id="btn-all" onclick="filterCategory('all')">All Products</button></li>
+          <li><button class="nav-btn" id="btn-men" onclick="filterCategory('men')">Men</button></li>
+          <li><button class="nav-btn" id="btn-women" onclick="filterCategory('women')">Women</button></li>
+        </ul>
+      </nav>
+
+      <button class="cart-btn" onclick="openModal('cartModal')">
+        🛒 السلة
+        <span class="cart-badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="heroSection">
+    <h1>ALBATROSS PERFUME</h1>
+    <div class="gold-divider"></div>
+    <p>تشكيلة عطور فاخرة تم تصميمها بعناية فائقة لتعكس أعلى مستويات الأناقة.</p>
+    <button class="btn-shop-now" onclick="scrollToProducts()">Shop Now / تسوق الآن</button>
+  </section>
+
+  <!-- PRODUCTS CONTAINER -->
+  <main class="container" id="productsSection">
+    <h2 class="section-title">مجموعة العطور المميزة</h2>
+    <div class="products-grid" id="productsGrid">
+      <!-- Dynamic Products Render Here -->
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <h3 style="color: var(--primary-brown); margin-bottom: 0.5rem;">ALBATROSS PERFUME</h3>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">تواصل معنا عبر وسائل التواصل الاجتماعي:</p>
+    
+    <div class="social-links">
+      <a href="https://wa.me/201158455963" target="_blank" class="social-link">
+        💬 واتساب: 01158455963
+      </a>
+      <a href="https://www.facebook.com/share/1BHfLwyrot/" target="_blank" class="social-link">
+        🌐 فيسبوك: ALBATROSS
+      </a>
+    </div>
+
+    <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.85rem;">&copy; 2026 ALBATROSS PERFUME. All Rights Reserved.</p>
+  </footer>
+
+  <!-- CART MODAL -->
+  <div class="modal-overlay" id="cartModal">
+    <div class="modal-card">
+      <button class="close-modal" onclick="closeModal('cartModal')">&times;</button>
+      <h2 style="text-align: center; color: var(--primary-brown);">سلة المشتريات</h2>
+      <div class="gold-divider"></div>
+
+      <div id="cartItemsContainer">
+        <!-- Cart Items list -->
+      </div>
+
+      <div class="cart-summary" id="cartSummaryBox">
+        <form id="checkoutForm" onsubmit="handleCheckout(event)">
+          <div class="form-group">
+            <label for="custName">الاسم بالكامل</label>
+            <input type="text" id="custName" class="form-control" placeholder="أدخل اسمك الكريم" required>
+          </div>
+
+          <div class="form-group">
+            <label for="custPhone">رقم الهاتف للتواصل</label>
+            <input type="tel" id="custPhone" class="form-control" placeholder="01XXXXXXXXX" required>
+          </div>
+
+          <div class="form-group">
+            <label for="custAddress">العنوان بالتفصيل (المحافظة، المنطقة، الشارع، رقم العقار)</label>
+            <textarea id="custAddress" class="form-control" rows="3" placeholder="أدخل العنوان بالتفصيل للشحن..." required></textarea>
+          </div>
+
+          <div class="summary-line">
+            <span>إجمالي المنتجات:</span>
+            <span id="subtotalPrice">0 ج.م</span>
+          </div>
+          <div class="summary-line">
+            <span>سعر الشحن (جميع المحافظات):</span>
+            <span id="shippingPrice">80 ج.م</span>
+          </div>
+          <div class="summary-line total">
+            <span>الإجمالي الكلي:</span>
+            <span id="grandTotalPrice">0 ج.م</span>
+          </div>
+
+          <button type="submit" class="btn-submit">تأكيد الطلب</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL MODAL (ADD & DELETE) -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-card">
+      <button class="close-modal" onclick="closeModal('adminModal')">&times;</button>
+      <h2 style="text-align: center; color: var(--primary-brown);">لوحة التحكم (Admin Panel)</h2>
+      <div class="gold-divider"></div>
+
+      <!-- Add Product Form -->
+      <form id="addProductForm" style="margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 0.8rem; color: var(--caramel);">إضافة منتج جديد:</h3>
+        <div class="form-group">
+          <label>اسم المنتج</label>
+          <input type="text" id="pName" class="form-control" placeholder="مثال: عطر النسر" required>
+        </div>
+        <div class="form-group">
+          <label>القسم (Category)</label>
+          <select id="pCategory" class="form-control" required>
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>السعر (ج.م)</label>
+          <input type="number" id="pPrice" class="form-control" placeholder="مثال: 250" required>
+        </div>
+        <div class="form-group">
+          <label>الوصف</label>
+          <textarea id="pDesc" class="form-control" rows="2" placeholder="وصف المنتج..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>المكونات</label>
+          <textarea id="pIngredients" class="form-control" rows="2" placeholder="المكونات..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>مسار الصورة (مثال: D:\albatross\png\nasr.png.png)</label>
+          <input type="text" id="pImgPath" class="form-control" placeholder="D:\albatross\png\nasr.png.png" required>
+        </div>
+        <button type="submit" class="btn-submit">إضافة المنتج</button>
+      </form>
+
+      <!-- Manage / Delete Products List -->
+      <h3 style="margin-bottom: 0.8rem; color: var(--caramel);">إدارة / حذف المنتجات الحالية:</h3>
+      <div id="adminProductsList">
+        <!-- List of products with Delete buttons -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // 1. Initial Default Products with Local File Paths
+    const defaultProducts = [
+      {
+        id: 1,
+        name: "نسر",
+        category: "men",
+        price: 180,
+        description: "عطر رجالي فاخر يجسد الهيبة والقوة برائحة خشبية دافئة وتدوم طويلاً.",
+        ingredients: "العود العتيق، الخشب الدافئ، العنبر، لمسات من التابل العطري.",
+        image: "D:\\albatross\\png\\nasr.png.png"
+      },
+      {
+        id: 2,
+        name: "عقاب",
+        category: "men",
+        price: 200,
+        description: "عطر جريء وقوي مصمم للرجل العصري صاحب الحضور اللامع.",
+        ingredients: "الجلد الفاخر، الأرز، الباتشولي، والمسك الأسود.",
+        image: "D:\\albatross\\png\\eqab.png.png"
+      },
+      {
+        id: 3,
+        name: "نورس",
+        category: "men",
+        price: 160,
+        description: "عطر منعش ومليء بالحيوية يمنحك شعوراً بالحرية والانتعاش.",
+        ingredients: "حمضيات راقية، أريج البحر، البرغموت، الخزامى.",
+        image: "D:\\albatross\\png\\nowras.png.png"
+      },
+      {
+        id: 4,
+        name: "عنقاء",
+        category: "women",
+        price: 210,
+        description: "عطر نسائي ساحر ينبض بالأنوثة والجمال بلمسات ساحرة لا تُنسى.",
+        ingredients: "الزهور النادرة، الفانيليا الملكية، الياسمين الناعم.",
+        image: "D:\\albatross\\png\\anqa.png.png"
+      },
+      {
+        id: 5,
+        name: "كوليبري",
+        category: "women",
+        price: 175,
+        description: "رائحة رقيقة ومخملية تأسر الحواس وتمنحك حضوراً مفعماً بالرقة.",
+        ingredients: "مسك الروم، الفاكهة الاستوائية، الفانيليا البيضاء.",
+        image: "D:\\albatross\\png\\kolibri.png.png"
+      },
+      {
+        id: 6,
+        name: "كناريا",
+        category: "women",
+        price: 165,
+        description: "عطر مبهج يجمع بين الأنوثة والأناقة لمزيج فريد وفاخر.",
+        ingredients: "زهر البرتقال، الورد الجوري، أخشاب الصندل، العنبر الذهبي.",
+        image: "D:\\albatross\\png\\kanarya.png.png"
+      }
+    ];
+
+    let cart = [];
+    let currentCategory = 'all';
+    const SHIPPING_FEE = 80; // سعر شحن ثابت لجميع المحافظات
+
+    // Get & Save Products (Key updated to local_v4 to reflect new local paths)
+    function getProducts() {
+      const stored = localStorage.getItem('albatross_products_local_v4');
+      if (!stored) {
+        localStorage.setItem('albatross_products_local_v4', JSON.stringify(defaultProducts));
+        return defaultProducts;
+      }
+      return JSON.parse(stored);
+    }
+
+    function saveProducts(products) {
+      localStorage.setItem('albatross_products_local_v4', JSON.stringify(products));
+      renderProducts();
+      renderAdminProductsList();
+    }
+
+    // Render Store Products Grid
+    function renderProducts(query = '') {
+      const products = getProducts();
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = '';
+
+      let filtered = currentCategory === 'all' 
+        ? products 
+        : products.filter(p => p.category === currentCategory);
+
+      if (query.trim() !== '') {
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
+      }
+
+      if(filtered.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">لا توجد منتجات مطابقة حالياً.</p>`;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <div class="img-wrapper">
+            <span class="category-badge">${p.category}</span>
+            <img src="${p.image}" alt="${p.name}" class="product-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' style=\'background:%23efe8df;\'><text x=\'50%\' y=\'50%\' font-size=\'18\' fill=\'%238c6d58\' text-anchor=\'middle\' dy=\'.3em\'>ALBATROSS PERFUME</text></svg>'">
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">${p.name}</h3>
+            <div class="product-price">${p.price} ج.م</div>
+            <p class="product-desc">${p.description}</p>
+            <div class="ingredients-box">
+              <strong>المكونات:</strong> ${p.ingredients}
+            </div>
+            <button class="btn-add-cart" onclick="addToCart(${p.id})">أضف إلى السلة 🛒</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Search Box & Admin Password Access
+    function handleSearch() {
+      const searchVal = document.getElementById('searchInput').value.trim();
+      if (searchVal === '25101978') {
+        document.getElementById('searchInput').value = '';
+        renderAdminProductsList();
+        openModal('adminModal');
+        renderProducts();
+      } else {
+        renderProducts(searchVal);
+      }
+    }
+
+    // Category Filter & Navigation
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      if(cat === 'all') document.getElementById('btn-all').classList.add('active');
+      if(cat === 'men') document.getElementById('btn-men').classList.add('active');
+      if(cat === 'women') document.getElementById('btn-women').classList.add('active');
+      
+      document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
+      renderProducts();
+    }
+
+    function showHome() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollToProducts() {
+      document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // CART SYSTEM
+    function addToCart(productId) {
+      const products = getProducts();
+      const product = products.find(p => p.id === productId);
+      if(!product) return;
+
+      const existing = cart.find(item => item.id === productId);
+      if(existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+
+      updateCartUI();
+      alert(`تمت إضافة "${product.name}" إلى السلة!`);
+    }
+
+    function changeQty(productId, delta) {
+      const item = cart.find(i => i.id === productId);
+      if(!item) return;
+
+      item.qty += delta;
+      if(item.qty <= 0) {
+        cart = cart.filter(i => i.id !== productId);
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('cartCount').textContent = totalQty;
+
+      const container = document.getElementById('cartItemsContainer');
+      container.innerHTML = '';
+
+      if(cart.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color: var(--text-muted); padding: 1rem;">السلة فارغة حالياً.</p>`;
+      } else {
+        cart.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'cart-item';
+          div.innerHTML = `
+            <img src="${item.image}" class="cart-item-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' style=\'background:%23efe8df;\'></svg>'">
+            <div class="cart-item-details">
+              <strong>${item.name}</strong>
+              <div>${item.price} ج.م</div>
+              <div class="qty-controls">
+                <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+                <span>${item.qty}</span>
+                <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+              </div>
+            </div>
+            <strong style="color: var(--caramel);">${item.price * item.qty} ج.م</strong>
+          `;
+          container.appendChild(div);
+        });
+      }
+
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const shippingFee = cart.length > 0 ? SHIPPING_FEE : 0;
+      const grandTotal = subtotal + shippingFee;
+
+      document.getElementById('subtotalPrice').textContent = `${subtotal} ج.م`;
+      document.getElementById('shippingPrice').textContent = `${shippingFee} ج.م`;
+      document.getElementById('grandTotalPrice').textContent = `${grandTotal} ج.م`;
+    }
+
+    function handleCheckout(e) {
+      e.preventDefault();
+      if (cart.length === 0) {
+        alert('سلة المشتريات فارغة!');
+        return;
+      }
+      const name = document.getElementById('custName').value;
+      alert(`شكراً لك ${name}! تم إرسال طلبك بنجاح وسنتواصل معك قريباً لتأكيد الشحن.`);
+      cart = [];
+      updateCartUI();
+      closeModal('cartModal');
+      document.getElementById('checkoutForm').reset();
+    }
+
+    // ADMIN MANAGEMENT
+    document.getElementById('addProductForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const newProduct = {
+        id: Date.now(),
+        name: document.getElementById('pName').value,
+        category: document.getElementById('pCategory').value,
+        price: parseFloat(document.getElementById('pPrice').value),
+        description: document.getElementById('pDesc').value,
+        ingredients: document.getElementById('pIngredients').value,
+        image: document.getElementById('pImgPath').value
+      };
+
+      const products = getProducts();
+      products.push(newProduct);
+      saveProducts(products);
+
+      alert('تمت إضافة المنتج بنجاح!');
+      document.getElementById('addProductForm').reset();
+    });
+
+    function renderAdminProductsList() {
+      const products = getProducts();
+      const listContainer = document.getElementById('adminProductsList');
+      listContainer.innerHTML = '';
+
+      products.forEach(p => {
+        const item = document.createElement('div');
+        item.className = 'admin-prod-item';
+        item.innerHTML = `
+          <div>
+            <strong>${p.name}</strong> (${p.category}) - <span style="color:var(--caramel);">${p.price} ج.م</span>
+          </div>
+          <button class="btn-delete" onclick="deleteProduct(${p.id})">حذف 🗑️</button>
+        `;
+        listContainer.appendChild(item);
+      });
+    }
+
+    function deleteProduct(productId) {
+      if(confirm('هل أنت تأكد من رغبتك في حذف هذا المنتج؟')) {
+        let products = getProducts();
+        products = products.filter(p => p.id !== productId);
+        saveProducts(products);
+      }
+    }
+
+    // MODALS HELPERS
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    // INIT
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts();
+      updateCartUI();
+    });
+  </script>
+</body>
+</html>
