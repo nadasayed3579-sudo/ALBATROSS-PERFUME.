@@ -10,7 +10,7 @@
        -------------------------------------------------- */
     :root {
       --bg-color: #f8f5f0;        /* خلفية بيج فاخرة وموحدة */
-      --card-bg: #ffffff;         /* خلفية البيضاء للبطاقات */
+      --card-bg: #ffffff;          /* خلفية البيضاء للبطاقات */
       --primary-brown: #3d2b1f;   /* بني داكن أنيق */
       --caramel: #c68b59;         /* لون الكاراميل */
       --gold: #d4af37;            /* لمسات ذهبية */
@@ -708,8 +708,8 @@
           <textarea id="pIngredients" class="form-control" rows="2" placeholder="المكونات..." required></textarea>
         </div>
         <div class="form-group">
-          <label>مسار الصورة (مثال: D:\albatross\png\nasr.png.png)</label>
-          <input type="text" id="pImgPath" class="form-control" placeholder="D:\albatross\png\nasr.png.png" required>
+          <label>مسار الصورة (مثال: png/nasr.png)</label>
+          <input type="text" id="pImgPath" class="form-control" placeholder="png/nasr.png" required>
         </div>
         <button type="submit" id="btnSubmitForm" class="btn-submit">إضافة المنتج</button>
         <button type="button" id="btnCancelEdit" class="btn-cancel" style="display: none;" onclick="resetAdminForm()">إلغاء التعديل</button>
@@ -725,7 +725,7 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // 1. Initial Default Products with Local File Paths
+    // 1. Initial Default Products with Correct Relative GitHub Paths
     const defaultProducts = [
       {
         id: 1,
@@ -734,7 +734,7 @@
         price: 180,
         description: "عطر رجالي فاخر يجسد الهيبة والقوة برائحة خشبية دافئة وتدوم طويلاً.",
         ingredients: "العود العتيق، الخشب الدافئ، العنبر، لمسات من التابل العطري.",
-        image: "D:\\albatross\\png\\nasr.png"
+        image: "png/nasr.png"
       },
       {
         id: 2,
@@ -743,7 +743,7 @@
         price: 200,
         description: "عطر جريء وقوي مصمم للرجل العصري صاحب الحضور اللامع.",
         ingredients: "الجلد الفاخر، الأرز، الباتشولي، والمسك الأسود.",
-        image: "D:\\albatross\\png\\eqab.png"
+        image: "png/eqab.png"
       },
       {
         id: 3,
@@ -752,7 +752,7 @@
         price: 160,
         description: "عطر منعش ومليء بالحيوية يمنحك شعوراً بالحرية والانتعاش.",
         ingredients: "حمضيات راقية، أريج البحر، البرغموت، الخزامى.",
-        image: "D:\\albatross\\png\\nowras.png"
+        image: "png/nowras.png"
       },
       {
         id: 4,
@@ -761,7 +761,7 @@
         price: 210,
         description: "عطر نسائي ساحر ينبض بالأنوثة والجمال بلمسات ساحرة لا تُنسى.",
         ingredients: "الزهور النادرة، الفانيليا الملكية، الياسمين الناعم.",
-        image: "D:\\albatross\\png\\anqa.png"
+        image: "png/anqa.png"
       },
       {
         id: 5,
@@ -770,7 +770,7 @@
         price: 175,
         description: "رائحة رقيقة ومخملية تأسر الحواس وتمنحك حضوراً مفعماً بالرقة.",
         ingredients: "مسك الروم، الفاكهة الاستوائية، الفانيليا البيضاء.",
-        image: "D:\\albatross\\png\\kolibri.png"
+        image: "png/kolibri.png"
       },
       {
         id: 6,
@@ -779,28 +779,37 @@
         price: 165,
         description: "عطر مبهج يجمع بين الأنوثة والأناقة لمزيج فريد وفاخر.",
         ingredients: "زهر البرتقال، الورد الجوري، أخشاب الصندل، العنبر الذهبي.",
-        image: "D:\\albatross\\png\\kanarya.png"
+        image: "png/kanarya.png"
       }
     ];
 
     let cart = [];
     let currentCategory = 'all';
-    const SHIPPING_FEE = 80; // سعر شحن ثابت لجميع المحافظات
+    const SHIPPING_FEE = 80;
 
-    // Get & Save Products (Key updated to local_v4 to reflect new local paths)
+    // Get & Save Products (Updated key to v10 to clear old local paths)
     function getProducts() {
-      const stored = localStorage.getItem('albatross_products_local_v4');
+      const stored = localStorage.getItem('albatross_products_v10');
       if (!stored) {
-        localStorage.setItem('albatross_products_local_v4', JSON.stringify(defaultProducts));
+        localStorage.setItem('albatross_products_v10', JSON.stringify(defaultProducts));
         return defaultProducts;
       }
       return JSON.parse(stored);
     }
 
     function saveProducts(products) {
-      localStorage.setItem('albatross_products_local_v4', JSON.stringify(products));
+      localStorage.setItem('albatross_products_v10', JSON.stringify(products));
       renderProducts();
       renderAdminProductsList();
+    }
+
+    // Modal helpers
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
     }
 
     // Render Store Products Grid
@@ -966,7 +975,6 @@
       let products = getProducts();
 
       if (editId) {
-        // حالة تعديل منتج موجود
         const productIndex = products.findIndex(p => p.id == editId);
         if (productIndex !== -1) {
           products[productIndex] = {
@@ -981,7 +989,6 @@
           alert('تم تعديل المنتج بنجاح!');
         }
       } else {
-        // حالة إضافة منتج جديد
         const newProduct = {
           id: Date.now(),
           name: document.getElementById('pName').value,
@@ -1016,8 +1023,16 @@
       document.getElementById('btnSubmitForm').textContent = 'حفظ التعديلات';
       document.getElementById('btnCancelEdit').style.display = 'block';
 
-      // التمرير لأعلى النموذج
       document.getElementById('addProductForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteProduct(productId) {
+      if (confirm('هل أنتِ متأكدة من حذف هذا المنتج؟')) {
+        let products = getProducts();
+        products = products.filter(p => p.id !== productId);
+        saveProducts(products);
+        alert('تم حذف المنتج بنجاح!');
+      }
     }
 
     function resetAdminForm() {
@@ -1041,36 +1056,17 @@
             <strong>${p.name}</strong> (${p.category}) - <span style="color:var(--caramel);">${p.price} ج.م</span>
           </div>
           <div class="admin-btn-group">
-            <button class="btn-edit" onclick="editProduct(${p.id})">تعديل ✏️</button>
-            <button class="btn-delete" onclick="deleteProduct(${p.id})">حذف 🗑️</button>
+            <button class="btn-edit" onclick="editProduct(${p.id})">تعديل</button>
+            <button class="btn-delete" onclick="deleteProduct(${p.id})">حذف</button>
           </div>
         `;
         listContainer.appendChild(item);
       });
     }
 
-    function deleteProduct(productId) {
-      if(confirm('هل أنت تأكد من رغبتك في حذف هذا المنتج؟')) {
-        let products = getProducts();
-        products = products.filter(p => p.id !== productId);
-        saveProducts(products);
-        if (document.getElementById('editProductId').value == productId) {
-          resetAdminForm();
-        }
-      }
-    }
-
-    // MODALS HELPERS
-    function openModal(id) { document.getElementById(id).classList.add('active'); }
-    function closeModal(id) { 
-      document.getElementById(id).classList.remove('active'); 
-      if (id === 'adminModal') resetAdminForm();
-    }
-
-    // INIT
+    // Initialize Store
     document.addEventListener('DOMContentLoaded', () => {
       renderProducts();
-      updateCartUI();
     });
   </script>
 </body>
