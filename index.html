@@ -18,7 +18,7 @@
       --beige-border: #e3d8cb;    /* حدود بيج */
       --text-muted: #7a6a5d;      /* بني رمادي خفيف */
       --danger: #c0392b;          /* زر الحذف */
-      --edit-btn: #2980b9;        /* زر التعديل */
+      --edit: #2980b9;            /* زر التعديل */
       --shadow-soft: 0 10px 30px rgba(61, 43, 31, 0.08);
       --transition: all 0.3s ease;
     }
@@ -482,27 +482,47 @@
       border-radius: 8px;
       margin-bottom: 0.5rem;
       background-color: var(--bg-color);
-      gap: 0.5rem;
-      flex-wrap: wrap;
     }
 
-    .admin-prod-actions {
+    .admin-btn-group {
       display: flex;
       gap: 0.5rem;
     }
 
-    .btn-action {
+    .btn-edit {
+      background-color: var(--edit);
+      color: #ffffff;
       border: none;
       padding: 0.4rem 0.8rem;
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.85rem;
       font-weight: bold;
-      color: #ffffff;
     }
 
-    .btn-edit { background-color: var(--edit-btn); }
-    .btn-delete { background-color: var(--danger); }
+    .btn-delete {
+      background-color: var(--danger);
+      color: #ffffff;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .btn-cancel {
+      background-color: #7f8c8d;
+      color: #ffffff;
+      border: none;
+      padding: 0.8rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      width: 100%;
+    }
 
     /* --------------------------------------------------
        6. FOOTER & CONTACT
@@ -661,10 +681,9 @@
       <div class="gold-divider"></div>
 
       <!-- Add / Edit Product Form -->
-      <form id="productForm" style="margin-bottom: 2rem;">
-        <input type="hidden" id="pId">
+      <form id="addProductForm" style="margin-bottom: 2rem;">
+        <input type="hidden" id="editProductId" value="">
         <h3 id="formTitle" style="margin-bottom: 0.8rem; color: var(--caramel);">إضافة منتج جديد:</h3>
-        
         <div class="form-group">
           <label>اسم المنتج</label>
           <input type="text" id="pName" class="form-control" placeholder="مثال: عطر النسر" required>
@@ -689,15 +708,14 @@
           <textarea id="pIngredients" class="form-control" rows="2" placeholder="المكونات..." required></textarea>
         </div>
         <div class="form-group">
-          <label>مسار الصورة (مثال: png/nasr.png)</label>
-          <input type="text" id="pImgPath" class="form-control" placeholder="png/nasr.png" required>
+          <label>مسار الصورة (مثال: D:\albatross\png\nasr.png.png)</label>
+          <input type="text" id="pImgPath" class="form-control" placeholder="D:\albatross\png\nasr.png.png" required>
         </div>
-        
-        <button type="submit" id="btnFormSubmit" class="btn-submit">حفظ المنتج</button>
-        <button type="button" id="btnCancelEdit" class="btn-submit" style="background: #7f8c8d; display: none; margin-top: 0.4rem;" onclick="resetProductForm()">إلغاء التعديل</button>
+        <button type="submit" id="btnSubmitForm" class="btn-submit">إضافة المنتج</button>
+        <button type="button" id="btnCancelEdit" class="btn-cancel" style="display: none;" onclick="resetAdminForm()">إلغاء التعديل</button>
       </form>
 
-      <!-- Manage Products List -->
+      <!-- Manage / Edit / Delete Products List -->
       <h3 style="margin-bottom: 0.8rem; color: var(--caramel);">إدارة / تعديل / حذف المنتجات الحالية:</h3>
       <div id="adminProductsList">
         <!-- List of products with Edit & Delete buttons -->
@@ -707,7 +725,7 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // 1. Initial Default Products
+    // 1. Initial Default Products with Local File Paths
     const defaultProducts = [
       {
         id: 1,
@@ -716,7 +734,7 @@
         price: 180,
         description: "عطر رجالي فاخر يجسد الهيبة والقوة برائحة خشبية دافئة وتدوم طويلاً.",
         ingredients: "العود العتيق، الخشب الدافئ، العنبر، لمسات من التابل العطري.",
-        image: "png/nasr.png"
+        image: "D:\\albatross\\png\\nasr.png.png"
       },
       {
         id: 2,
@@ -725,7 +743,7 @@
         price: 200,
         description: "عطر جريء وقوي مصمم للرجل العصري صاحب الحضور اللامع.",
         ingredients: "الجلد الفاخر، الأرز، الباتشولي، والمسك الأسود.",
-        image: "png/eqab.png"
+        image: "D:\\albatross\\png\\eqab.png.png"
       },
       {
         id: 3,
@@ -734,7 +752,7 @@
         price: 160,
         description: "عطر منعش ومليء بالحيوية يمنحك شعوراً بالحرية والانتعاش.",
         ingredients: "حمضيات راقية، أريج البحر، البرغموت، الخزامى.",
-        image: "png/nowras.png"
+        image: "D:\\albatross\\png\\nowras.png.png"
       },
       {
         id: 4,
@@ -743,7 +761,7 @@
         price: 210,
         description: "عطر نسائي ساحر ينبض بالأنوثة والجمال بلمسات ساحرة لا تُنسى.",
         ingredients: "الزهور النادرة، الفانيليا الملكية، الياسمين الناعم.",
-        image: "png/anqa.png"
+        image: "D:\\albatross\\png\\anqa.png.png"
       },
       {
         id: 5,
@@ -752,7 +770,7 @@
         price: 175,
         description: "رائحة رقيقة ومخملية تأسر الحواس وتمنحك حضوراً مفعماً بالرقة.",
         ingredients: "مسك الروم، الفاكهة الاستوائية، الفانيليا البيضاء.",
-        image: "png/kolibri.png"
+        image: "D:\\albatross\\png\\kolibri.png.png"
       },
       {
         id: 6,
@@ -761,26 +779,26 @@
         price: 165,
         description: "عطر مبهج يجمع بين الأنوثة والأناقة لمزيج فريد وفاخر.",
         ingredients: "زهر البرتقال، الورد الجوري، أخشاب الصندل، العنبر الذهبي.",
-        image: "png/kanarya.png"
+        image: "D:\\albatross\\png\\kanarya.png.png"
       }
     ];
 
     let cart = [];
     let currentCategory = 'all';
-    const SHIPPING_FEE = 80;
+    const SHIPPING_FEE = 80; // سعر شحن ثابت لجميع المحافظات
 
-    // Get & Save Products
+    // Get & Save Products (Key updated to local_v4 to reflect new local paths)
     function getProducts() {
-      const stored = localStorage.getItem('albatross_products_v7');
+      const stored = localStorage.getItem('albatross_products_local_v4');
       if (!stored) {
-        localStorage.setItem('albatross_products_v7', JSON.stringify(defaultProducts));
+        localStorage.setItem('albatross_products_local_v4', JSON.stringify(defaultProducts));
         return defaultProducts;
       }
       return JSON.parse(stored);
     }
 
     function saveProducts(products) {
-      localStorage.setItem('albatross_products_v7', JSON.stringify(products));
+      localStorage.setItem('albatross_products_local_v4', JSON.stringify(products));
       renderProducts();
       renderAdminProductsList();
     }
@@ -940,19 +958,19 @@
       document.getElementById('checkoutForm').reset();
     }
 
-    // ADMIN MANAGEMENT (ADD & EDIT)
-    document.getElementById('productForm').addEventListener('submit', (e) => {
+    // ADMIN MANAGEMENT (ADD, EDIT, DELETE)
+    document.getElementById('addProductForm').addEventListener('submit', (e) => {
       e.preventDefault();
       
-      const pId = document.getElementById('pId').value;
-      const products = getProducts();
+      const editId = document.getElementById('editProductId').value;
+      let products = getProducts();
 
-      if (pId) {
-        // Edit Existing Product
-        const index = products.findIndex(p => p.id == pId);
-        if (index !== -1) {
-          products[index] = {
-            id: Number(pId),
+      if (editId) {
+        // حالة تعديل منتج موجود
+        const productIndex = products.findIndex(p => p.id == editId);
+        if (productIndex !== -1) {
+          products[productIndex] = {
+            id: Number(editId),
             name: document.getElementById('pName').value,
             category: document.getElementById('pCategory').value,
             price: parseFloat(document.getElementById('pPrice').value),
@@ -960,10 +978,10 @@
             ingredients: document.getElementById('pIngredients').value,
             image: document.getElementById('pImgPath').value
           };
-          alert('تم تحديث المنتج بنجاح!');
+          alert('تم تعديل المنتج بنجاح!');
         }
       } else {
-        // Add New Product
+        // حالة إضافة منتج جديد
         const newProduct = {
           id: Date.now(),
           name: document.getElementById('pName').value,
@@ -978,34 +996,35 @@
       }
 
       saveProducts(products);
-      resetProductForm();
+      resetAdminForm();
     });
 
     function editProduct(productId) {
       const products = getProducts();
-      const p = products.find(prod => prod.id === productId);
-      if (!p) return;
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
 
-      document.getElementById('pId').value = p.id;
-      document.getElementById('pName').value = p.name;
-      document.getElementById('pCategory').value = p.category;
-      document.getElementById('pPrice').value = p.price;
-      document.getElementById('pDesc').value = p.description;
-      document.getElementById('pIngredients').value = p.ingredients;
-      document.getElementById('pImgPath').value = p.image;
+      document.getElementById('editProductId').value = product.id;
+      document.getElementById('pName').value = product.name;
+      document.getElementById('pCategory').value = product.category;
+      document.getElementById('pPrice').value = product.price;
+      document.getElementById('pDesc').value = product.description;
+      document.getElementById('pIngredients').value = product.ingredients;
+      document.getElementById('pImgPath').value = product.image;
 
-      document.getElementById('formTitle').textContent = 'تعديل بيانات المنتج: ' + p.name;
-      document.getElementById('btnFormSubmit').textContent = 'تحديث البيانات';
+      document.getElementById('formTitle').textContent = 'تعديل المنتج: ' + product.name;
+      document.getElementById('btnSubmitForm').textContent = 'حفظ التعديلات';
       document.getElementById('btnCancelEdit').style.display = 'block';
 
-      document.getElementById('adminModal').querySelector('.modal-card').scrollTop = 0;
+      // التمرير لأعلى النموذج
+      document.getElementById('addProductForm').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function resetProductForm() {
-      document.getElementById('pId').value = '';
-      document.getElementById('productForm').reset();
+    function resetAdminForm() {
+      document.getElementById('editProductId').value = '';
+      document.getElementById('addProductForm').reset();
       document.getElementById('formTitle').textContent = 'إضافة منتج جديد:';
-      document.getElementById('btnFormSubmit').textContent = 'حفظ المنتج';
+      document.getElementById('btnSubmitForm').textContent = 'إضافة المنتج';
       document.getElementById('btnCancelEdit').style.display = 'none';
     }
 
@@ -1021,9 +1040,9 @@
           <div>
             <strong>${p.name}</strong> (${p.category}) - <span style="color:var(--caramel);">${p.price} ج.م</span>
           </div>
-          <div class="admin-prod-actions">
-            <button class="btn-action btn-edit" onclick="editProduct(${p.id})">تعديل ✏️</button>
-            <button class="btn-action btn-delete" onclick="deleteProduct(${p.id})">حذف 🗑️</button>
+          <div class="admin-btn-group">
+            <button class="btn-edit" onclick="editProduct(${p.id})">تعديل ✏️</button>
+            <button class="btn-delete" onclick="deleteProduct(${p.id})">حذف 🗑️</button>
           </div>
         `;
         listContainer.appendChild(item);
@@ -1035,12 +1054,18 @@
         let products = getProducts();
         products = products.filter(p => p.id !== productId);
         saveProducts(products);
+        if (document.getElementById('editProductId').value == productId) {
+          resetAdminForm();
+        }
       }
     }
 
     // MODALS HELPERS
     function openModal(id) { document.getElementById(id).classList.add('active'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    function closeModal(id) { 
+      document.getElementById(id).classList.remove('active'); 
+      if (id === 'adminModal') resetAdminForm();
+    }
 
     // INIT
     document.addEventListener('DOMContentLoaded', () => {
