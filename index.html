@@ -740,7 +740,7 @@
         id: 1,
         name: "نسر",
         category: "men",
-        price: 1050,
+        price: 180,
         description: "عطر رجالي فاخر يجسد الهيبة والقوة برائحة خشبية دافئة وتدوم طويلاً.",
         ingredients: "العود العتيق، الخشب الدافئ، العنبر، لمسات من التابل العطري.",
         image: "png/nasr.png"
@@ -749,7 +749,7 @@
         id: 2,
         name: "عقاب",
         category: "men",
-        price: 1300,
+        price: 200,
         description: "عطر جريء وقوي مصمم للرجل العصري صاحب الحضور اللامع.",
         ingredients: "الجلد الفاخر، الأرز، الباتشولي، والمسك الأسود.",
         image: "png/eqab.png"
@@ -758,7 +758,7 @@
         id: 3,
         name: "نورس",
         category: "men",
-        price: 1200,
+        price: 160,
         description: "عطر منعش ومليء بالحيوية يمنحك شعوراً بالحرية والانتعاش.",
         ingredients: "حمضيات راقية، أريج البحر، البرغموت، الخزامى.",
         image: "png/nowras.png"
@@ -767,7 +767,7 @@
         id: 4,
         name: "عنقاء",
         category: "women",
-        price: 1300,
+        price: 210,
         description: "عطر نسائي ساحر ينبض بالأنوثة والجمال بلمسات ساحرة لا تُنسى.",
         ingredients: "الزهور النادرة، الفانيليا الملكية، الياسمين الناعم.",
         image: "png/anqa.png"
@@ -776,7 +776,7 @@
         id: 5,
         name: "كوليبري",
         category: "women",
-        price: 1200,
+        price: 175,
         description: "رائحة رقيقة ومخملية تأسر الحواس وتمنحك حضوراً مفعماً بالرقة.",
         ingredients: "مسك الروم، الفاكهة الاستوائية، الفانيليا البيضاء.",
         image: "png/kolibri.png"
@@ -785,7 +785,7 @@
         id: 6,
         name: "كناريا",
         category: "women",
-        price: 1050,
+        price: 165,
         description: "عطر مبهج يجمع بين الأنوثة والأناقة لمزيج فريد وفاخر.",
         ingredients: "زهر البرتقال، الورد الجوري، أخشاب الصندل، العنبر الذهبي.",
         image: "png/kanarya.png"
@@ -796,18 +796,18 @@
     let currentCategory = 'all';
     const SHIPPING_FEE = 80;
 
-    // Get & Save Products
+    // Get & Save Products - Updated to v11 to force browser cache reset
     function getProducts() {
-      const stored = localStorage.getItem('albatross_products_v10');
+      const stored = localStorage.getItem('albatross_products_v11');
       if (!stored) {
-        localStorage.setItem('albatross_products_v10', JSON.stringify(defaultProducts));
+        localStorage.setItem('albatross_products_v11', JSON.stringify(defaultProducts));
         return defaultProducts;
       }
       return JSON.parse(stored);
     }
 
     function saveProducts(products) {
-      localStorage.setItem('albatross_products_v10', JSON.stringify(products));
+      localStorage.setItem('albatross_products_v11', JSON.stringify(products));
       renderProducts();
       renderAdminProductsList();
     }
@@ -1065,28 +1065,25 @@
       document.getElementById('pIngredients').value = product.ingredients;
       document.getElementById('pImgPath').value = product.image;
 
-      document.getElementById('formTitle').textContent = 'تعديل المنتج: ' + product.name;
-      document.getElementById('btnSubmitForm').textContent = 'حفظ التعديلات';
-      document.getElementById('btnCancelEdit').style.display = 'block';
-
-      document.getElementById('addProductForm').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function deleteProduct(productId) {
-      if (confirm('هل أنتِ متأكدة من حذف هذا المنتج؟')) {
-        let products = getProducts();
-        products = products.filter(p => p.id !== productId);
-        saveProducts(products);
-        alert('تم حذف المنتج بنجاح!');
-      }
+      document.getElementById('formTitle').textContent = "تعديل المنتج:";
+      document.getElementById('btnSubmitForm').textContent = "حفظ التعديلات";
+      document.getElementById('btnCancelEdit').style.display = "block";
     }
 
     function resetAdminForm() {
       document.getElementById('editProductId').value = '';
       document.getElementById('addProductForm').reset();
-      document.getElementById('formTitle').textContent = 'إضافة منتج جديد:';
-      document.getElementById('btnSubmitForm').textContent = 'إضافة المنتج';
-      document.getElementById('btnCancelEdit').style.display = 'none';
+      document.getElementById('formTitle').textContent = "إضافة منتج جديد:";
+      document.getElementById('btnSubmitForm').textContent = "إضافة المنتج";
+      document.getElementById('btnCancelEdit').style.display = "none";
+    }
+
+    function deleteProduct(productId) {
+      if (confirm('هل أنت تأكد من حذف هذا المنتج؟')) {
+        let products = getProducts();
+        products = products.filter(p => p.id !== productId);
+        saveProducts(products);
+      }
     }
 
     function renderAdminProductsList() {
@@ -1098,7 +1095,9 @@
         const item = document.createElement('div');
         item.className = 'admin-prod-item';
         item.innerHTML = `
-          <span>${p.name} (${p.price} ج.م)</span>
+          <div>
+            <strong>${p.name}</strong> - ${p.price} ج.م (${p.category})
+          </div>
           <div class="admin-btn-group">
             <button class="btn-edit" onclick="editProduct(${p.id})">تعديل</button>
             <button class="btn-delete" onclick="deleteProduct(${p.id})">حذف</button>
@@ -1108,7 +1107,7 @@
       });
     }
 
-    // Initial render
+    // Initial Load
     renderProducts();
   </script>
 </body>
