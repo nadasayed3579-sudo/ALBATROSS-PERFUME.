@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ALBATROSS PERFUME - Official Store</title>
+  
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      emailjs.init("CYbNvvhc1AZHmBJu1");
+    })();
+  </script>
+
   <style>
     /* --------------------------------------------------
        1. COLOR PALETTE (Beige, Caramel, Brown, Gold, White)
@@ -12,7 +21,7 @@
       --bg-color: #f8f5f0;        /* خلفية بيج فاخرة وموحدة */
       --card-bg: #ffffff;          /* خلفية البيضاء للبطاقات */
       --primary-brown: #3d2b1f;   /* بني داكن أنيق */
-      --caramel: #c68b59;         /* لون الكاراميل */
+      --caramel: #c68b59;          /* لون الكاراميل */
       --gold: #d4af37;            /* لمسات ذهبية */
       --beige-light: #f1eae1;     /* بيج فاتح */
       --beige-border: #e3d8cb;    /* حدود بيج */
@@ -667,7 +676,7 @@
             <span id="grandTotalPrice">0 ج.م</span>
           </div>
 
-          <button type="submit" class="btn-submit">تأكيد الطلب</button>
+          <button type="submit" id="btnSubmitOrder" class="btn-submit">تأكيد الطلب</button>
         </form>
       </div>
     </div>
@@ -731,7 +740,7 @@
         id: 1,
         name: "نسر",
         category: "men",
-        price: 180,
+        price: 1050,
         description: "عطر رجالي فاخر يجسد الهيبة والقوة برائحة خشبية دافئة وتدوم طويلاً.",
         ingredients: "العود العتيق، الخشب الدافئ، العنبر، لمسات من التابل العطري.",
         image: "png/nasr.png"
@@ -740,7 +749,7 @@
         id: 2,
         name: "عقاب",
         category: "men",
-        price: 200,
+        price: 1300,
         description: "عطر جريء وقوي مصمم للرجل العصري صاحب الحضور اللامع.",
         ingredients: "الجلد الفاخر، الأرز، الباتشولي، والمسك الأسود.",
         image: "png/eqab.png"
@@ -749,7 +758,7 @@
         id: 3,
         name: "نورس",
         category: "men",
-        price: 160,
+        price: 1200,
         description: "عطر منعش ومليء بالحيوية يمنحك شعوراً بالحرية والانتعاش.",
         ingredients: "حمضيات راقية، أريج البحر، البرغموت، الخزامى.",
         image: "png/nowras.png"
@@ -758,7 +767,7 @@
         id: 4,
         name: "عنقاء",
         category: "women",
-        price: 210,
+        price: 1300,
         description: "عطر نسائي ساحر ينبض بالأنوثة والجمال بلمسات ساحرة لا تُنسى.",
         ingredients: "الزهور النادرة، الفانيليا الملكية، الياسمين الناعم.",
         image: "png/anqa.png"
@@ -767,7 +776,7 @@
         id: 5,
         name: "كوليبري",
         category: "women",
-        price: 175,
+        price: 1200,
         description: "رائحة رقيقة ومخملية تأسر الحواس وتمنحك حضوراً مفعماً بالرقة.",
         ingredients: "مسك الروم، الفاكهة الاستوائية، الفانيليا البيضاء.",
         image: "png/kolibri.png"
@@ -776,7 +785,7 @@
         id: 6,
         name: "كناريا",
         category: "women",
-        price: 165,
+        price: 1050,
         description: "عطر مبهج يجمع بين الأنوثة والأناقة لمزيج فريد وفاخر.",
         ingredients: "زهر البرتقال، الورد الجوري، أخشاب الصندل، العنبر الذهبي.",
         image: "png/kanarya.png"
@@ -787,7 +796,7 @@
     let currentCategory = 'all';
     const SHIPPING_FEE = 80;
 
-    // Get & Save Products (Updated key to v10 to clear old local paths)
+    // Get & Save Products
     function getProducts() {
       const stored = localStorage.getItem('albatross_products_v10');
       if (!stored) {
@@ -953,18 +962,55 @@
       document.getElementById('grandTotalPrice').textContent = `${grandTotal} ج.م`;
     }
 
+    // SEND ORDER VIA EMAILJS
     function handleCheckout(e) {
       e.preventDefault();
       if (cart.length === 0) {
         alert('سلة المشتريات فارغة!');
         return;
       }
-      const name = document.getElementById('custName').value;
-      alert(`شكراً لك ${name}! تم إرسال طلبك بنجاح وسنتواصل معك قريباً لتأكيد الشحن.`);
-      cart = [];
-      updateCartUI();
-      closeModal('cartModal');
-      document.getElementById('checkoutForm').reset();
+
+      const submitBtn = document.getElementById('btnSubmitOrder');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'جاري إرسال الطلب...';
+
+      const custName = document.getElementById('custName').value;
+      const custPhone = document.getElementById('custPhone').value;
+      const custAddress = document.getElementById('custAddress').value;
+
+      const subtotal = document.getElementById('subtotalPrice').textContent;
+      const shipping = document.getElementById('shippingPrice').textContent;
+      const grandTotal = document.getElementById('grandTotalPrice').textContent;
+
+      const orderDetails = cart.map(i => `${i.name} (الكمية: ${i.qty}) - السعر: ${i.price * i.qty} ج.م`).join('\n');
+
+      const templateParams = {
+        to_name: "ALBATROSS Admin",
+        from_name: custName,
+        cust_phone: custPhone,
+        cust_address: custAddress,
+        order_details: orderDetails,
+        subtotal: subtotal,
+        shipping: shipping,
+        total_price: grandTotal
+      };
+
+      emailjs.send('service_kgntfxo', 'template_mbfbe8l', templateParams, 'CYbNvvhc1AZHmBJu1')
+        .then(() => {
+          alert(`شكراً لك ${custName}! تم إرسال طلبك بنجاح ووصل للبريد الإلكتروني.`);
+          cart = [];
+          updateCartUI();
+          closeModal('cartModal');
+          document.getElementById('checkoutForm').reset();
+        })
+        .catch((error) => {
+          console.error('EmailJS Error:', error);
+          alert('حدث خطأ أثناء إرسال الطلب، يرجى إعادة المحاولة.');
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'تأكيد الطلب';
+        });
     }
 
     // ADMIN MANAGEMENT (ADD, EDIT, DELETE)
@@ -1052,9 +1098,7 @@
         const item = document.createElement('div');
         item.className = 'admin-prod-item';
         item.innerHTML = `
-          <div>
-            <strong>${p.name}</strong> (${p.category}) - <span style="color:var(--caramel);">${p.price} ج.م</span>
-          </div>
+          <span>${p.name} (${p.price} ج.م)</span>
           <div class="admin-btn-group">
             <button class="btn-edit" onclick="editProduct(${p.id})">تعديل</button>
             <button class="btn-delete" onclick="deleteProduct(${p.id})">حذف</button>
@@ -1064,10 +1108,8 @@
       });
     }
 
-    // Initialize Store
-    document.addEventListener('DOMContentLoaded', () => {
-      renderProducts();
-    });
+    // Initial render
+    renderProducts();
   </script>
 </body>
 </html>
