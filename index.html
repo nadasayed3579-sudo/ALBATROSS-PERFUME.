@@ -740,7 +740,7 @@
         id: 1,
         name: "نسر",
         category: "men",
-        price: 180,
+        price: 950,
         description: "عطر رجالي فاخر يجسد الهيبة والقوة برائحة خشبية دافئة وتدوم طويلاً.",
         ingredients: "العود العتيق، الخشب الدافئ، العنبر، لمسات من التابل العطري.",
         image: "png/nasr.png"
@@ -749,7 +749,7 @@
         id: 2,
         name: "عقاب",
         category: "men",
-        price: 200,
+        price: 1050,
         description: "عطر جريء وقوي مصمم للرجل العصري صاحب الحضور اللامع.",
         ingredients: "الجلد الفاخر، الأرز، الباتشولي، والمسك الأسود.",
         image: "png/eqab.png"
@@ -758,7 +758,7 @@
         id: 3,
         name: "نورس",
         category: "men",
-        price: 160,
+        price: 1300,
         description: "عطر منعش ومليء بالحيوية يمنحك شعوراً بالحرية والانتعاش.",
         ingredients: "حمضيات راقية، أريج البحر، البرغموت، الخزامى.",
         image: "png/nowras.png"
@@ -767,7 +767,7 @@
         id: 4,
         name: "عنقاء",
         category: "women",
-        price: 210,
+        price: 1300,
         description: "عطر نسائي ساحر ينبض بالأنوثة والجمال بلمسات ساحرة لا تُنسى.",
         ingredients: "الزهور النادرة، الفانيليا الملكية، الياسمين الناعم.",
         image: "png/anqa.png"
@@ -776,7 +776,7 @@
         id: 5,
         name: "كوليبري",
         category: "women",
-        price: 175,
+        price: 1050,
         description: "رائحة رقيقة ومخملية تأسر الحواس وتمنحك حضوراً مفعماً بالرقة.",
         ingredients: "مسك الروم، الفاكهة الاستوائية، الفانيليا البيضاء.",
         image: "png/kolibri.png"
@@ -785,7 +785,7 @@
         id: 6,
         name: "كناريا",
         category: "women",
-        price: 165,
+        price: 950,
         description: "عطر مبهج يجمع بين الأنوثة والأناقة لمزيج فريد وفاخر.",
         ingredients: "زهر البرتقال، الورد الجوري، أخشاب الصندل، العنبر الذهبي.",
         image: "png/kanarya.png"
@@ -796,18 +796,20 @@
     let currentCategory = 'all';
     const SHIPPING_FEE = 80;
 
-    // Get & Save Products - Updated to v11 to force browser cache reset
+    // STORAGE KEY VERSION (v12) TO OVERWRITE OLD STORED PRICES IN LOCALSTORAGE
+    const STORAGE_KEY = 'albatross_products_v12';
+
     function getProducts() {
-      const stored = localStorage.getItem('albatross_products_v11');
+      const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        localStorage.setItem('albatross_products_v11', JSON.stringify(defaultProducts));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultProducts));
         return defaultProducts;
       }
       return JSON.parse(stored);
     }
 
     function saveProducts(products) {
-      localStorage.setItem('albatross_products_v11', JSON.stringify(products));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
       renderProducts();
       renderAdminProductsList();
     }
