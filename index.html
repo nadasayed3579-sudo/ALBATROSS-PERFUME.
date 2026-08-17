@@ -15,10 +15,10 @@
 
   <style>
     /* --------------------------------------------------
-       1. COLOR PALETTE (Beige, Caramel, Brown, Gold, White)
+       1. COLOR PALETTE
        -------------------------------------------------- */
     :root {
-      --bg-color: #f8f5f0;        /* خلفية بيج فاخرة وموحدة */
+      --bg-color: #f8f5f0;        /* خلفية بيج فاخرة */
       --card-bg: #ffffff;          /* خلفية البيضاء للبطاقات */
       --primary-brown: #3d2b1f;   /* بني داكن أنيق */
       --caramel: #c68b59;          /* لون الكاراميل */
@@ -217,12 +217,12 @@
     }
 
     /* --------------------------------------------------
-       4. PRODUCTS GRID & CARDS
+       4. PRODUCTS GRID & CARDS (2 PRODUCTS PER ROW)
        -------------------------------------------------- */
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 2rem 1rem;
       flex: 1;
     }
 
@@ -234,10 +234,11 @@
       font-weight: 800;
     }
 
+    /* العرض منتجين جنباً إلى جنب دائماً */
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
     }
 
     .product-card {
@@ -258,7 +259,7 @@
 
     .img-wrapper {
       width: 100%;
-      height: 260px;
+      height: 280px;
       background-color: var(--beige-light);
       position: relative;
     }
@@ -284,7 +285,7 @@
     }
 
     .product-info {
-      padding: 1.5rem;
+      padding: 1.2rem;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
@@ -305,8 +306,8 @@
 
     .product-desc {
       color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
+      font-size: 0.88rem;
+      margin-bottom: 0.8rem;
       flex-grow: 1;
     }
 
@@ -333,6 +334,43 @@
 
     .btn-add-cart:hover {
       background-color: var(--primary-brown);
+    }
+
+    /* تحسين العرض على الشاشات الصغيرة مع الحفاظ على منتجين بجانب بعضهما */
+    @media (max-width: 600px) {
+      .products-grid {
+        gap: 0.8rem;
+      }
+
+      .img-wrapper {
+        height: 180px;
+      }
+
+      .product-info {
+        padding: 0.8rem;
+      }
+
+      .product-title {
+        font-size: 1.1rem;
+      }
+
+      .product-price {
+        font-size: 1.1rem;
+      }
+
+      .product-desc {
+        font-size: 0.8rem;
+      }
+
+      .ingredients-box {
+        font-size: 0.75rem;
+        padding: 0.4rem;
+      }
+
+      .btn-add-cart {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+      }
     }
 
     /* --------------------------------------------------
@@ -706,7 +744,7 @@
         </div>
         <div class="form-group">
           <label>السعر (ج.م)</label>
-          <input type="number" id="pPrice" class="form-control" placeholder="مثال: 180" required>
+          <input type="number" id="pPrice" class="form-control" placeholder="مثال: 950" required>
         </div>
         <div class="form-group">
           <label>الوصف</label>
@@ -717,8 +755,8 @@
           <textarea id="pIngredients" class="form-control" rows="2" placeholder="المكونات..." required></textarea>
         </div>
         <div class="form-group">
-          <label>مسار الصورة (مثال: D:\albatross\Png\nasr.png)</label>
-          <input type="text" id="pImgPath" class="form-control" placeholder="D:\albatross\Png\nasr.png" required>
+          <label>مسار الصورة (مثال: Png/nasr.png)</label>
+          <input type="text" id="pImgPath" class="form-control" placeholder="Png/nasr.png" required>
         </div>
         <button type="submit" id="btnSubmitForm" class="btn-submit">إضافة المنتج</button>
         <button type="button" id="btnCancelEdit" class="btn-cancel" style="display: none;" onclick="resetAdminForm()">إلغاء التعديل</button>
@@ -734,7 +772,7 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // 1. Initial Default Products with English Names and Local System Paths
+    // 1. Initial Products List with Pair Order (Men + Women) and Updated Prices & Paths (Png/)
     const defaultProducts = [
       {
         id: 1,
@@ -743,53 +781,52 @@
         price: 950,
         description: "عطر رجالي فاخر يجسد الهيبة والقوة برائحة خشبية دافئة وتدوم طويلاً.",
         ingredients: "العود العتيق، الخشب الدافئ، العنبر، لمسات من التابل العطري.",
-        image: "D:/albatross/Png/nasr.png"
+        image: "Png/nasr.png"
       },
       {
         id: 2,
-        name: "EQAB",
-        category: "men",
-        price: 1050,
-        description: "عطر جريء وقوي مصمم للرجل العصري صاحب الحضور اللامع.",
-        ingredients: "الجلد الفاخر، الأرز، الباتشولي، والمسك الأسود.",
-        image: "D:/albatross/Png/eqab.png"
-      },
-      {
-        id: 3,
-        name: "NOWRAS",
-        category: "men",
-        price: 1300,
-        description: "عطر منعش ومليء بالحيوية يمنحك شعوراً بالحرية والانتعاش.",
-        ingredients: "حمضيات راقية، أريج البحر، البرغموت، الخزامى.",
-        image: "D:/albatross/Png/nowras.png"
-      },
-      {
-        id: 4,
         name: "ANQA",
         category: "women",
         price: 1300,
         description: "عطر نسائي ساحر ينبض بالأنوثة والجمال بلمسات ساحرة لا تُنسى.",
         ingredients: "الزهور النادرة، الفانيليا الملكية، الياسمين الناعم.",
-        image: "D:/albatross/Png/anqa.png"
+        image: "Png/anqa.png"
       },
       {
-        id: 5,
+        id: 3,
+        name: "EQAB",
+        category: "men",
+        price: 1050,
+        description: "عطر جريء وقوي مصمم للرجل العصري صاحب الحضور اللامع.",
+        ingredients: "الجلد الفاخر، الأرز، الباتشولي، والمسك الأسود.",
+        image: "Png/eqab.png"
+      },
+      {
+        id: 4,
         name: "KOLIBRI",
         category: "women",
         price: 1050,
         description: "رائحة رقيقة ومخملية تأسر الحواس وتمنحك حضوراً مفعماً بالرقة.",
         ingredients: "مسك الروم، الفاكهة الاستوائية، الفانيليا البيضاء.",
-        image: "D:/albatross/Png/kolibri.png"
+        image: "Png/kolibri.png"
+      },
+      {
+        id: 5,
+        name: "NOWRAS",
+        category: "men",
+        price: 1300,
+        description: "عطر منعش ومليء بالحيوية يمنحك شعوراً بالحرية والانتعاش.",
+        ingredients: "حمضيات راقية، أريج البحر، البرغموت، الخزامى.",
+        image: "Png/nowras.png"
       },
       {
         id: 6,
         name: "KANARYA",
         category: "women",
-        price: 950
-      ,
+        price: 950,
         description: "عطر مبهج يجمع بين الأنوثة والأناقة لمزيج فريد وفاخر.",
         ingredients: "زهر البرتقال، الورد الجوري، أخشاب الصندل، العنبر الذهبي.",
-        image: "D:/albatross/Png/kanarya.png"
+        image: "Png/kanarya.png"
       }
     ];
 
@@ -797,8 +834,8 @@
     let currentCategory = 'all';
     const SHIPPING_FEE = 80;
 
-    // STORAGE KEY VERSION (v13) TO APPLY ENGLISH NAMES AND LOCAL PATHS
-    const STORAGE_KEY = 'albatross_products_v13';
+    // STORAGE KEY VERSION (v16) TO UPDATE PRICES & LAYOUT
+    const STORAGE_KEY = 'albatross_products_v16';
 
     function getProducts() {
       const stored = localStorage.getItem(STORAGE_KEY);
